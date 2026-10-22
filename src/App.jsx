@@ -18,53 +18,62 @@ function Contador() {
 }
 
 function Aviso() {
-  const [Visivel, setVisivel] = useState(false);
+  const [visivel, setVisivel] = useState(false);
 
   return (
     <div>
-      <button onClick={() => setVisivel(!Visivel)}>
+      <button onClick={() => setVisivel(!visivel)}>
         Alternar aviso
       </button>
 
-      {Visivel && <p>Conteúdo visível</p>}
+      {visivel && <p>Conteúdo visível</p>}
     </div>
   )
 }
 
-function Saudacao() {
+function Saudacao({ nome }) {
+  return <p>Seja bem-vindo {nome}!</p>;
+}
+
+function Nome() {
   const [nome, setNome] = useState("");
-  const [Visivel02, setVisivel02] = useState(false);
+  const [confirmado, setConfirmado] = useState("");
+  const [visivel02, setVisivel02] = useState(false);
+
+  function aoPressionar(evento) {
+    if (evento.key === "Enter") {
+      setConfirmado(nome);
+    }
+  }
 
   return (
-    <div>
+    <>
       <input
         value={nome}
         onChange={(evento) => setNome(evento.target.value)}
+        onKeyDown={aoPressionar}
         placeholder="Digite seu nome"
       />
 
+      {confirmado && <Saudacao nome={confirmado} />}
+
       <div>
-        <button onClick={()=> setVisivel02(!Visivel02)}>
-          Esconder
+        <button onClick={() => setVisivel02(!visivel02)}>
+          Alternar aviso
         </button>
+
+        {visivel02 && <p>Seja Bem-vindo {nome}</p>}
       </div>
-      {Saudacao && (Saudacao)}
-
-    
-
-      <p>Olá, {nome || "visitante"}!</p>
-    </div>
-  )
-}
-
-function App() {
-  return (
-    <>
-      <Contador />
-      <Aviso />
-      <Saudacao />
     </>
   )
 }
 
-export default App
+export default function App() {
+  return (
+    <>
+      <Contador />
+      <Aviso />
+      <Nome />
+    </>
+  )
+}
